@@ -2,6 +2,7 @@ import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 import { PillButton } from "@/components/ui/PillButton";
 import { DottedPattern } from "@/components/ui/DottedPattern";
+import image1 from "../assets/images/acredite.jpg";
 
 const socialLinks = [
   {
@@ -38,7 +39,7 @@ export function KioskSocial() {
           <h2 className="mb-6 font-serif text-3xl font-bold uppercase">O Kiosque</h2>
           <div className="relative mb-6 aspect-[4/3] overflow-hidden rounded-2xl">
             <Image
-              src="https://images.unsplash.com/photo-1589998059174-903c4a4a0a0c?w=600&q=80"
+              src={image1}
               alt="Publicação do museu"
               fill
               className="object-cover"

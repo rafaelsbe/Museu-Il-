@@ -33,9 +33,16 @@ export function Agenda() {
 
       <div className="relative mx-auto max-w-6xl">
         <div className="mb-12 flex flex-col items-start justify-between gap-6 md:flex-row md:items-center">
-          <h2 className="font-serif text-3xl font-bold uppercase tracking-wide md:text-4xl">
-            Nossa Agenda
-          </h2>
+          <div className="max-w-2xl">
+            <h2 className="font-serif text-3xl font-bold uppercase tracking-wide md:text-4xl">
+              Nossa Agenda
+            </h2>
+            <p className="mt-4 text-sm leading-relaxed text-gray-text">
+              Acompanhe os encontros e atividades que celebram a cultura, a memória e a
+              educação afro-brasileira. Cada evento foi pensado para inspirar e aproximar
+              visitantes de todas as idades.
+            </p>
+          </div>
           <PillButton href="#">
             Todos os Eventos
             <ArrowRight size={14} />
@@ -72,3 +79,5 @@ export function Agenda() {
     </section>
   );
 }
+
+

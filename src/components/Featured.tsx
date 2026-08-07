@@ -12,10 +12,14 @@ export function Featured() {
             Tradição
             <br />e Memória Viva
           </h2>
-          <p className="mb-8 max-w-md text-sm leading-relaxed text-white/70">
+          <p className="mb-4 max-w-md text-sm leading-relaxed text-white/70">
             O Museu de Candomblé nasce do desejo de preservar e celebrar a rica
             herança espiritual e cultural afro-brasileira. Um espaço de acolhimento,
             educação e resistência.
+          </p>
+          <p className="mb-8 max-w-md text-sm leading-relaxed text-white/70">
+            Aqui você encontra exposições, relatos orais e atividades que conectam
+            gerações, transformando cada visita em uma experiência de descoberta e reverência.
           </p>
           <PillButton href="#" variant="ghost" className="w-fit">
             Saiba Mais
