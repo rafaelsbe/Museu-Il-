@@ -1,8 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
-import { Search, User, ChevronLeft, ChevronRight } from "lucide-react";
+import { type PointerEvent, useEffect, useRef, useState } from "react";
+import { Search, User } from "lucide-react";
 import imageFestival from "../assets/images/Candomblé festival in Salvador, Brazil….jpg";
 import imageMarço from "../assets/images/21 de março_ por que é tão importante conhecer….jpg";
 import image6360 from "../assets/images/636063147379966144.jpg";
@@ -32,6 +32,10 @@ const headerImages = [
 
 export function Header() {
   const [currentImage, setCurrentImage] = useState(0);
+  const touchStartX = useRef<number | null>(null);
+  const touchStartY = useRef<number | null>(null);
+  const touchEndX = useRef<number | null>(null);
+  const touchEndY = useRef<number | null>(null);
 
   const prevImage = () =>
     setCurrentImage((current) =>
@@ -43,15 +47,80 @@ export function Header() {
       current === headerImages.length - 1 ? 0 : current + 1,
     );
 
+  useEffect(() => {
+    const interval = setInterval(nextImage, 25000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const handlePointerDown = (event: PointerEvent<HTMLDivElement>) => {
+    touchStartX.current = event.clientX;
+    touchStartY.current = event.clientY;
+    touchEndX.current = null;
+    touchEndY.current = null;
+  };
+
+  const handlePointerMove = (event: PointerEvent<HTMLDivElement>) => {
+    if (touchStartX.current !== null && touchStartY.current !== null) {
+      touchEndX.current = event.clientX;
+      touchEndY.current = event.clientY;
+    }
+  };
+
+  const handlePointerEnd = () => {
+    if (
+      touchStartX.current === null ||
+      touchStartY.current === null ||
+      touchEndX.current === null ||
+      touchEndY.current === null
+    ) {
+      touchStartX.current = null;
+      touchStartY.current = null;
+      touchEndX.current = null;
+      touchEndY.current = null;
+      return;
+    }
+
+    const distanceX = touchStartX.current - touchEndX.current;
+    const distanceY = touchStartY.current - touchEndY.current;
+    const minDistance = 30;
+
+    if (Math.abs(distanceX) > Math.abs(distanceY) && Math.abs(distanceX) > minDistance) {
+      if (distanceX > 0) {
+        nextImage();
+      } else {
+        prevImage();
+      }
+    }
+
+    touchStartX.current = null;
+    touchStartY.current = null;
+    touchEndX.current = null;
+    touchEndY.current = null;
+  };
+
+  const handlePointerCancel = () => {
+    touchStartX.current = null;
+    touchStartY.current = null;
+    touchEndX.current = null;
+    touchEndY.current = null;
+  };
+
   return (
-    <header className="relative min-h-[85vh] overflow-hidden">
+    <header
+      className="relative min-h-[85vh] overflow-hidden"
+      style={{ touchAction: "pan-y" }}
+      onPointerDown={handlePointerDown}
+      onPointerMove={handlePointerMove}
+      onPointerUp={handlePointerEnd}
+      onPointerCancel={handlePointerCancel}
+    >
       {headerImages.map((image, index) => (
         <Image
           key={image.alt}
           src={image.src}
           alt={image.alt}
           fill
-          className={`absolute inset-0 object-cover transition-opacity duration-700 ${
+          className={`absolute inset-0 object-cover transition-opacity duration-700 ease-in-out ${
             index === currentImage ? "opacity-100" : "opacity-0"
           }`}
           priority={index === 0}
@@ -95,47 +164,6 @@ export function Header() {
           É um espaço de memória, acolhimento e educação, onde
           tradições ancestrais se encontram com a cidade contemporânea.
         </p>
-      </div>
-
-      <div
-        style={{ touchAction: "manipulation" }}
-        className="absolute bottom-8 left-1/2 z-30 flex -translate-x-1/2 items-center gap-3 rounded-full bg-black/30 px-4 py-2 shadow-2xl shadow-black/30 backdrop-blur-sm md:bottom-12"
-      >
-        <button
-          type="button"
-          onClick={prevImage}
-          aria-label="Imagem anterior"
-          className="flex h-12 w-12 items-center justify-center rounded-full border border-white/30 bg-white/10 text-white transition hover:bg-white/20"
-        >
-          <ChevronLeft size={18} />
-        </button>
-
-        <div className="flex items-center gap-2 px-1">
-          {headerImages.map((_, index) => (
-            <button
-              key={index}
-              type="button"
-              onClick={() => setCurrentImage(index)}
-              aria-label={`Ir para imagem ${index + 1}`}
-              className="flex h-12 w-12 items-center justify-center rounded-full transition-colors hover:bg-white/20"
-            >
-              <span
-                className={`block h-2 w-2 rounded-full ${
-                  index === currentImage ? "bg-white" : "bg-white/40"
-                }`}
-              />
-            </button>
-          ))}
-        </div>
-
-        <button
-          type="button"
-          onClick={nextImage}
-          aria-label="Próxima imagem"
-          className="flex h-12 w-12 items-center justify-center rounded-full border border-white/30 bg-white/10 text-white transition hover:bg-white/20"
-        >
-          <ChevronRight size={18} />
-        </button>
       </div>
 
       <div className="absolute -bottom-px left-0 right-0 z-0">
