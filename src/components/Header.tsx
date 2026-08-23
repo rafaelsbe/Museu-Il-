@@ -2,18 +2,9 @@
 
 import Image from "next/image";
 import { type PointerEvent, useEffect, useRef, useState } from "react";
-import { Search, User } from "lucide-react";
 import imageFestival from "../assets/images/Candomblé festival in Salvador, Brazil….jpg";
 import imageMarço from "../assets/images/21 de março_ por que é tão importante conhecer….jpg";
 import image6360 from "../assets/images/636063147379966144.jpg";
-
-const navLinks = [
-  "O Museu",
-  "Acervo",
-  "Programação",
-  "Educação",
-  "Visite",
-];
 
 const headerImages = [
   {
@@ -33,9 +24,7 @@ const headerImages = [
 export function Header() {
   const [currentImage, setCurrentImage] = useState(0);
   const touchStartX = useRef<number | null>(null);
-  const touchStartY = useRef<number | null>(null);
   const touchEndX = useRef<number | null>(null);
-  const touchEndY = useRef<number | null>(null);
 
   const prevImage = () =>
     setCurrentImage((current) =>
@@ -54,55 +43,38 @@ export function Header() {
 
   const handlePointerDown = (event: PointerEvent<HTMLDivElement>) => {
     touchStartX.current = event.clientX;
-    touchStartY.current = event.clientY;
     touchEndX.current = null;
-    touchEndY.current = null;
   };
 
   const handlePointerMove = (event: PointerEvent<HTMLDivElement>) => {
-    if (touchStartX.current !== null && touchStartY.current !== null) {
+    if (touchStartX.current !== null) {
       touchEndX.current = event.clientX;
-      touchEndY.current = event.clientY;
     }
   };
 
   const handlePointerEnd = () => {
-    if (
-      touchStartX.current === null ||
-      touchStartY.current === null ||
-      touchEndX.current === null ||
-      touchEndY.current === null
-    ) {
+    if (touchStartX.current === null || touchEndX.current === null) {
       touchStartX.current = null;
-      touchStartY.current = null;
       touchEndX.current = null;
-      touchEndY.current = null;
       return;
     }
 
-    const distanceX = touchStartX.current - touchEndX.current;
-    const distanceY = touchStartY.current - touchEndY.current;
-    const minDistance = 30;
+    const distance = touchStartX.current - touchEndX.current;
+    const minDistance = 50;
 
-    if (Math.abs(distanceX) > Math.abs(distanceY) && Math.abs(distanceX) > minDistance) {
-      if (distanceX > 0) {
-        nextImage();
-      } else {
-        prevImage();
-      }
+    if (distance > minDistance) {
+      nextImage();
+    } else if (distance < -minDistance) {
+      prevImage();
     }
 
     touchStartX.current = null;
-    touchStartY.current = null;
     touchEndX.current = null;
-    touchEndY.current = null;
   };
 
   const handlePointerCancel = () => {
     touchStartX.current = null;
-    touchStartY.current = null;
     touchEndX.current = null;
-    touchEndY.current = null;
   };
 
   return (
@@ -127,29 +99,6 @@ export function Header() {
         />
       ))}
       <div className="absolute inset-0 bg-black/50" />
-
-      <nav className="relative z-10 flex items-center justify-between px-6 py-5 md:px-12 lg:px-16">
-        <ul className="hidden items-center gap-6 md:flex lg:gap-8">
-          {navLinks.map((link) => (
-            <li key={link}>
-              <a
-                href="#"
-                className="text-xs font-semibold uppercase tracking-widest text-white/90 transition-colors hover:text-white"
-              >
-                {link}
-              </a>
-            </li>
-          ))}
-        </ul>
-        <div className="flex items-center gap-4 md:gap-5">
-          <button type="button" aria-label="Buscar" className="text-white/90 hover:text-white">
-            <Search size={20} />
-          </button>
-          <button type="button" aria-label="Perfil" className="text-white/90 hover:text-white">
-            <User size={20} />
-          </button>
-        </div>
-      </nav>
 
       <div className="relative z-10 flex min-h-[60vh] flex-col items-center justify-center px-6 text-center">
         <p className="mb-3 text-xs font-semibold uppercase tracking-[0.3em] text-white/80">

@@ -11,6 +11,16 @@
   --gray-border: #d1d1d1;
   --gold: #f5b800;
   --script-pink: #d4849a;
+
+  /* Area color tokens (4 museum areas). Replace names/content as needed. */
+  --area-1-color: #7b3f00; /* e.g., História */
+  --area-1-contrast: #ffffff;
+  --area-2-color: #00796b; /* e.g., Religião */
+  --area-2-contrast: #ffffff;
+  --area-3-color: #6a1b9a; /* e.g., Arte*/
+  --area-3-contrast: #ffffff;
+  --area-4-color: #d84315; /* e.g., Memória */
+  --area-4-contrast: #ffffff;
 }
 
 @theme inline {
@@ -38,3 +48,141 @@ body {
 html {
   scroll-behavior: smooth;
 }
+
+/* Accessibility utilities */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 1rem;
+  background: var(--color-primary);
+  color: white;
+  padding: 0.5rem 0.75rem;
+  border-radius: 4px;
+  z-index: 9999;
+  transition: top 0.2s ease, opacity 0.2s ease;
+}
+.skip-link:focus {
+  top: 1rem;
+  outline: 3px solid color-mix(in srgb, var(--color-primary) 60%, black);
+}
+
+/* Screen-reader only */
+.sr-only {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Focus visibility improvements */
+:focus {
+  outline: none;
+}
+:focus-visible {
+  outline: 3px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* High contrast mode hint */
+@media (forced-colors: active) {
+  :root {
+    --background: Window;
+    --foreground: WindowText;
+  }
+  a:focus {
+    outline: 2px solid WindowText;
+  }
+}
+
+/* Layout helpers */
+.container {
+  max-width: 96rem;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+/* Card */
+.card {
+  background: white;
+  border: 1px solid var(--color-gray-border);
+  border-radius: 12px;
+  padding: 1rem;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.04);
+}
+
+/* Primary button using CSS token */
+.btn-primary {
+  background: var(--color-primary);
+  color: var(--area-1-contrast, #fff);
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
+  font-weight: 600;
+}
+.btn-primary:disabled { opacity: 0.6 }
+
+/* Accent border for headings */
+.accent-heading {
+  border-left: 4px solid var(--color-primary);
+  padding-left: 0.75rem;
+}
+
+/* Small utilities */
+.muted { color: var(--color-gray-text) }
+.lead { font-size: 1.05rem; line-height: 1.6 }
+
+.museum-page { background: #f7f2eb; min-height: 100%; }
+.page-hero { background: linear-gradient(120deg, #241710 0%, #5b2b18 55%, #a15b32 100%); color: white; overflow: hidden; }
+.page-hero-content { padding-top: 5rem; padding-bottom: 5rem; }
+.page-hero h1 { max-width: 48rem; margin: .5rem 0 1rem; font-family: var(--font-playfair), Georgia, serif; font-size: clamp(2.4rem, 6vw, 5.6rem); line-height: 1.02; letter-spacing: -.02em; }
+.eyebrow { color: #b45309; font-size: .72rem; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; }
+.page-hero .eyebrow { color: #fbbf24; }
+.section-space { padding-top: 5rem; padding-bottom: 5rem; }
+.content-grid { display: grid; gap: 2rem; grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr); }
+.display-heading { max-width: 26rem; margin-top: .7rem; font-family: var(--font-playfair), Georgia, serif; font-size: clamp(2rem, 4vw, 3.5rem); line-height: 1.08; }
+.prose-block { max-width: 38rem; color: #5b514a; font-size: 1.05rem; line-height: 1.85; }
+.prose-block p + p { margin-top: 1.25rem; }
+.feature-grid { display: grid; gap: 1rem; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.feature-card { border-top: 2px solid #a15b32; padding: 1.25rem 0; }
+.feature-number { color: #a15b32; font-size: .75rem; font-weight: 700; letter-spacing: .15em; }
+.feature-card h3 { margin: 1.8rem 0 .5rem; font-family: var(--font-playfair), Georgia, serif; font-size: 1.6rem; }
+.feature-card p { color: #6d6259; line-height: 1.65; }
+.page-section { padding: 4.5rem 0; }
+.section-intro { max-width: 40rem; margin-bottom: 2.5rem; }
+.section-intro h1, .section-intro h2 { margin: .6rem 0 1rem; font-family: var(--font-playfair), Georgia, serif; font-size: clamp(2.2rem, 5vw, 4rem); line-height: 1.05; }
+.section-intro p { color: #6d6259; line-height: 1.7; }
+.editorial-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; }
+.editorial-card { min-height: 15rem; padding: 1.5rem; background: #fff; border: 1px solid #e6d9cc; box-shadow: 0 12px 30px rgba(72, 45, 28, .07); display: flex; flex-direction: column; justify-content: flex-end; }
+.editorial-card h2, .editorial-card h3 { margin: .7rem 0 .5rem; font-family: var(--font-playfair), Georgia, serif; font-size: 1.7rem; }
+.editorial-card p { color: #6d6259; line-height: 1.55; }
+.editorial-card.accent { background: #4e2516; color: white; border-color: #4e2516; }
+.editorial-card.accent p { color: #e8d9cf; }
+.route-link { display: inline-flex; width: fit-content; margin-top: 1rem; padding: .7rem 1rem; background: #874421; color: white; font-size: .8rem; font-weight: 700; text-decoration: none; border-radius: 999px; }
+.info-strip { display: grid; gap: 1rem; grid-template-columns: repeat(3, 1fr); margin-top: 2rem; }
+.info-item { padding: 1.25rem; background: #fffaf5; border-left: 3px solid #d97706; }
+.info-item strong { display: block; margin-bottom: .35rem; }
+.consultation-layout { max-width: 62rem; }
+.consultation-card { max-width: 42rem; padding: clamp(1.25rem, 4vw, 2.5rem); background: #fffaf5; border: 1px solid #e6d9cc; box-shadow: 0 18px 40px rgba(72, 45, 28, .1); }
+.price-tag { margin-bottom: 1.75rem; color: #874421; font-family: var(--font-playfair), Georgia, serif; font-size: 2.4rem; font-weight: 700; }
+.price-tag span { color: #6d6259; font-family: var(--font-montserrat), system-ui, sans-serif; font-size: .8rem; font-weight: 500; }
+.consultation-card input, .consultation-card textarea { border: 1px solid #d8c8ba; background: white; color: #241710; border-radius: 5px; }
+.consultation-card input:focus, .consultation-card textarea:focus { border-color: #874421; box-shadow: 0 0 0 3px rgba(135, 68, 33, .15); outline: none; }
+.no-underline { text-decoration: none; }
+@media (max-width: 700px) { .content-grid, .feature-grid, .editorial-grid, .info-strip { grid-template-columns: 1fr; } .page-hero-content { padding-top: 3.5rem; padding-bottom: 3.5rem; } .section-space, .page-section { padding-top: 3rem; padding-bottom: 3rem; } }
+

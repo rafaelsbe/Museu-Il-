@@ -5,11 +5,10 @@ import { Gallery } from "@/components/Gallery";
 import { Testimonials } from "@/components/Testimonials";
 import { KioskSocial } from "@/components/KioskSocial";
 import { Featured } from "@/components/Featured";
-import { Footer } from "@/components/Footer";
 
 export default function Home() {
   return (
-    <>
+    <main role="main" tabIndex={-1}>
       <Header />
       <QuickLinks />
       <Agenda />
@@ -17,7 +16,6 @@ export default function Home() {
       <Testimonials />
       <KioskSocial />
       <Featured />
-      <Footer />
-    </>
+    </main>
   );
 }

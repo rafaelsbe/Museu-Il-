@@ -4,7 +4,7 @@ import { DottedPattern } from "@/components/ui/DottedPattern";
 
 export function Footer() {
   return (
-    <footer>
+    <footer role="contentinfo" aria-label="Rodapé do site">
       <div className="relative overflow-hidden bg-white px-6 py-16 md:px-12 lg:px-16">
         <DottedPattern className="absolute -right-4 top-8 opacity-60" size={120} />
 
