@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { createClient } from "@/utils/supabase/server";
 
 type Consulta = {
   id: string;
@@ -9,7 +10,6 @@ type Consulta = {
   price: number;
 };
 
-const MOCK: Consulta[] = [];
 const CONSULTA_PRICE = 200;
 
 function isValidConsulta(body: unknown): body is Pick<Consulta, "name" | "email" | "date" | "notes"> {
@@ -33,7 +33,7 @@ function isFutureOrToday(value: string) {
 }
 
 export async function GET() {
-  return NextResponse.json({ data: MOCK, price: CONSULTA_PRICE });
+  return NextResponse.json({ price: CONSULTA_PRICE });
 }
 
 export async function POST(request: Request) {
@@ -43,18 +43,25 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Nome, e-mail e data válida são obrigatórios." }, { status: 422 });
     }
 
-    const consulta: Consulta = {
-      id: String(Date.now()),
-      name: body.name.trim(),
-      email: body.email.trim().toLowerCase(),
-      date: body.date,
-      notes: body.notes?.trim(),
-      price: CONSULTA_PRICE,
-    };
-    // Temporary in-memory persistence until a database is configured.
-    MOCK.push(consulta);
+    const supabase = await createClient();
+    const { data, error } = await supabase
+      .from("consultation_requests")
+      .insert({
+        name: body.name.trim(),
+        email: body.email.trim().toLowerCase(),
+        requested_date: body.date,
+        notes: body.notes?.trim() || null,
+        price_cents: CONSULTA_PRICE * 100,
+      })
+      .select("id")
+      .single();
 
-    return NextResponse.json({ ok: true, id: consulta.id, message: "Agendamento recebido." }, { status: 201 });
+    if (error || !data) {
+      console.error("Supabase consultation insert failed", error);
+      return NextResponse.json({ error: "Não foi possível registrar a solicitação." }, { status: 500 });
+    }
+
+    return NextResponse.json({ ok: true, id: data.id, message: "Agendamento recebido." }, { status: 201 });
   } catch {
     return NextResponse.json({ error: "Dados inválidos" }, { status: 400 });
   }
