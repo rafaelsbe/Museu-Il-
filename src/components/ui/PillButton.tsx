@@ -4,14 +4,14 @@ type PillButtonProps = {
   children: React.ReactNode;
   variant?: "primary" | "secondary" | "ghost" | "black";
   className?: string;
-  href?: string;
+  href: string;
 };
 
 export function PillButton({
   children,
   variant = "primary",
   className,
-  href = "#",
+  href,
 }: PillButtonProps) {
   const variants = {
     primary: "bg-primary text-white hover:bg-primary-dark",

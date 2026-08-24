@@ -49,7 +49,7 @@ export function KioskSocial() {
             Conheça nossas publicações, catálogos de exposições e materiais educativos
             sobre a história e as tradições do Candomblé no Brasil.
           </p>
-          <PillButton href="#">
+          <PillButton href="/acervo">
             Todas as Publicações
             <ArrowRight size={14} />
           </PillButton>
@@ -70,7 +70,7 @@ export function KioskSocial() {
             {socialLinks.map(({ label, icon }) => (
               <a
                 key={label}
-                href="#"
+                href="/sobre"
                 aria-label={label}
                 className="flex h-12 w-12 items-center justify-center rounded-full bg-white text-black transition-transform hover:scale-110"
               >
@@ -83,9 +83,6 @@ export function KioskSocial() {
             Acompanhe nossas novidades, eventos e conteúdos exclusivos nas redes sociais.
           </p>
 
-          {/* <PillButton href="#" variant="ghost" className="relative">
-            Assinar Newsletter
-          </PillButton> */}
         </div>
       </div>
     </section>

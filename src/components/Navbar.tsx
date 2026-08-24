@@ -68,7 +68,9 @@ export function Navbar() {
         <button
           type="button"
           onClick={() => setIsOpen(!isOpen)}
-          aria-label="Abrir menu de navegação"
+          aria-expanded={isOpen}
+          aria-controls="mobile-navigation"
+          aria-label={isOpen ? "Fechar menu de navegação" : "Abrir menu de navegação"}
           className="rounded-lg p-2 text-neutral-300 hover:bg-neutral-800 hover:text-white lg:hidden"
         >
           {isOpen ? <X size={24} /> : <Menu size={24} />}
@@ -77,7 +79,7 @@ export function Navbar() {
 
       {/* Mobile Navigation Drawer */}
       {isOpen && (
-        <div className="lg:hidden border-t border-neutral-800 bg-neutral-900/98 px-4 pb-6 pt-3 shadow-2xl animate-in slide-in-from-top duration-200">
+        <div id="mobile-navigation" className="lg:hidden border-t border-neutral-800 bg-neutral-900/98 px-4 pb-6 pt-3 shadow-2xl animate-in slide-in-from-top duration-200">
           <nav className="flex flex-col gap-1.5">
             {navLinks.map((item) => {
               const Icon = item.icon;

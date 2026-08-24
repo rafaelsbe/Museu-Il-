@@ -25,8 +25,8 @@ export default function ConsultasPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, email, date, notes, price: CONSULTA_PRICE }),
       });
-      if (!res.ok) throw new Error("Falha ao agendar consulta");
       const json = await res.json();
+      if (!res.ok) throw new Error(json.error || "Falha ao agendar consulta");
       setSuccess(json.message || "Agendamento realizado com sucesso.");
       setName("");
       setEmail("");
@@ -47,24 +47,25 @@ export default function ConsultasPage() {
         <p className="price-tag">R$ {CONSULTA_PRICE},00 <span>por consulta</span></p>
 
         <form onSubmit={handleSubmit} aria-labelledby="agendar-form" className="space-y-4">
+          <h2 id="agendar-form" className="sr-only">Formulário de solicitação de consulta</h2>
           <div>
             <label className="block text-sm font-semibold" htmlFor="name">Nome</label>
-            <input id="name" value={name} onChange={(e) => setName(e.target.value)} required className="mt-1 w-full rounded-md border px-3 py-2" />
+            <input id="name" name="name" autoComplete="name" value={name} onChange={(e) => setName(e.target.value)} required minLength={2} className="mt-1 w-full rounded-md border px-3 py-2" />
           </div>
 
           <div>
             <label className="block text-sm font-semibold" htmlFor="email">E-mail</label>
-            <input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required className="mt-1 w-full rounded-md border px-3 py-2" />
+            <input id="email" name="email" type="email" autoComplete="email" value={email} onChange={(e) => setEmail(e.target.value)} required className="mt-1 w-full rounded-md border px-3 py-2" />
           </div>
 
           <div>
             <label className="block text-sm font-semibold" htmlFor="date">Data desejada</label>
-            <input id="date" type="date" value={date} onChange={(e) => setDate(e.target.value)} required className="mt-1 w-full rounded-md border px-3 py-2" />
+            <input id="date" name="date" type="date" min={new Date().toISOString().split("T")[0]} value={date} onChange={(e) => setDate(e.target.value)} required className="mt-1 w-full rounded-md border px-3 py-2" />
           </div>
 
           <div>
             <label className="block text-sm font-semibold" htmlFor="notes">Observações</label>
-            <textarea id="notes" value={notes} onChange={(e) => setNotes(e.target.value)} className="mt-1 w-full rounded-md border px-3 py-2" rows={4} />
+            <textarea id="notes" name="notes" value={notes} onChange={(e) => setNotes(e.target.value)} className="mt-1 w-full rounded-md border px-3 py-2" rows={4} />
           </div>
 
           <div>
@@ -74,7 +75,7 @@ export default function ConsultasPage() {
           </div>
 
           {success && <p role="status" className="text-green-700">{success}</p>}
-          {error && <p role="alert" className="text-red-700">{error}</p>}
+          {error && <p role="alert" className="text-red-700">{error.replace("Error: ", "")}</p>}
         </form>
         </div>
       </section>
