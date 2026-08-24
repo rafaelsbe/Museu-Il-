@@ -37,11 +37,12 @@ export function KioskSocial() {
       <div className="mx-auto grid max-w-6xl gap-12 md:grid-cols-2">
         <div>
           <h2 className="mb-6 font-serif text-3xl font-bold uppercase">O Kiosque</h2>
-          <div className="relative mb-6 aspect-[4/3] overflow-hidden rounded-2xl">
+          <div className="relative mb-6 aspect-[4/3] overflow-hidden border border-gray-border/70">
             <Image
               src={image1}
               alt="Publicação do museu"
               fill
+              sizes="(max-width: 768px) 100vw, 50vw"
               className="object-cover"
             />
           </div>
@@ -55,7 +56,7 @@ export function KioskSocial() {
           </PillButton>
         </div>
 
-        <div className="relative overflow-hidden rounded-2xl bg-black p-8 md:p-10">
+        <div className="relative overflow-hidden bg-secondary-dark p-8 md:p-10">
           <DottedPattern
             color="white"
             className="absolute -bottom-4 -right-4 opacity-30"
@@ -72,7 +73,7 @@ export function KioskSocial() {
                 key={label}
                 href="/sobre"
                 aria-label={label}
-                className="flex h-12 w-12 items-center justify-center rounded-full bg-white text-black transition-transform hover:scale-110"
+                className="flex h-12 w-12 items-center justify-center rounded-full bg-white text-foreground transition-transform hover:scale-110"
               >
                 {icon}
               </a>

@@ -1,5 +1,4 @@
--- Museu Candomble: schema inicial para Supabase/PostgreSQL
--- Execute no SQL Editor do Supabase.
+
 
 create extension if not exists "pgcrypto";
 

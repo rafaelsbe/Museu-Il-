@@ -53,18 +53,19 @@ export function Agenda() {
           {events.map((event) => (
             <article
               key={event.title}
-              className="group overflow-hidden rounded-2xl bg-white shadow-sm transition-shadow hover:shadow-md"
+              className="group overflow-hidden border border-gray-border/70 bg-white transition-shadow hover:shadow-xl"
             >
               <div className="relative aspect-[4/3] overflow-hidden">
                 <Image
                   src={event.image}
                   alt={event.title}
                   fill
+                  sizes="(max-width: 768px) 100vw, 33vw"
                   className="object-cover transition-transform duration-500 group-hover:scale-105"
                 />
               </div>
               <div className="p-5">
-                <p className="mb-2 text-sm font-bold text-primary">{event.date}</p>
+                <p className="mb-2 text-xs font-bold uppercase tracking-[0.16em] text-secondary">{event.date}</p>
                 <h3 className="mb-1 text-lg font-bold uppercase">{event.title}</h3>
                 <p className="mb-4 text-sm text-gray-text">{event.subtitle}</p>
                 <div className="flex items-center gap-1.5 text-xs text-gray-text">

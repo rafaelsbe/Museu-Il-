@@ -29,7 +29,7 @@ export function Testimonials() {
   const next = () => setCurrent((c) => (c === reviews.length - 1 ? 0 : c + 1));
 
   return (
-    <section className="bg-beige px-6 py-16 md:px-12 lg:px-16 lg:py-24">
+    <section className="border-y border-gray-border/60 bg-beige px-6 py-16 md:px-12 lg:px-16 lg:py-24">
       <div className="mx-auto max-w-6xl">
         <div className="mb-12 text-center">
           <SectionHeading
@@ -44,7 +44,7 @@ export function Testimonials() {
             {reviews.map((review, i) => (
               <article
                 key={review.name}
-                className={`rounded-2xl bg-white p-6 shadow-md transition-all duration-300 ${
+                className={`border border-gray-border/60 bg-white p-6 shadow-sm transition-all duration-300 ${
                   i === current ? "scale-105 opacity-100" : "scale-95 opacity-60 md:opacity-80"
                 }`}
               >
@@ -67,7 +67,7 @@ export function Testimonials() {
               type="button"
               onClick={prev}
               aria-label="Anterior"
-              className="flex h-10 w-10 items-center justify-center rounded-full border border-gray-border bg-white text-gray-text transition-colors hover:border-primary hover:text-primary"
+                className="flex h-10 w-10 items-center justify-center rounded-full border border-gray-border bg-white text-gray-text transition-colors hover:border-secondary hover:text-secondary"
             >
               <ChevronLeft size={18} />
             </button>

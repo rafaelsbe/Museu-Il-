@@ -7,7 +7,7 @@ export function Featured() {
   return (
     <section className="relative overflow-hidden bg-white">
       <div className="grid min-h-[500px] lg:grid-cols-2">
-        <div className="relative flex flex-col justify-center bg-black px-8 py-16 md:px-16 lg:py-24">
+        <div className="relative flex flex-col justify-center bg-foreground px-8 py-16 md:px-16 lg:py-24">
           <h2 className="mb-6 font-serif text-4xl font-bold uppercase leading-tight text-white md:text-5xl">
             Tradição
             <br />e Memória Viva
@@ -35,7 +35,7 @@ export function Featured() {
             >
               <path
                 d="M0 0C32 125 32 375 0 500H64V0H0Z"
-                fill="black"
+                fill="#17201e"
               />
             </svg>
           </div>
@@ -51,7 +51,7 @@ export function Featured() {
             >
               <path
                 d="M64 0C32 125 32 375 64 500H0V0H64Z"
-                fill="white"
+                fill="#f7f3ec"
               />
             </svg>
           </div>
@@ -61,6 +61,7 @@ export function Featured() {
             src={image12}
             alt="Tradição do Candomblé"
             fill
+            sizes="(max-width: 1024px) 100vw, 50vw"
             className="object-cover"
           />
         </div>

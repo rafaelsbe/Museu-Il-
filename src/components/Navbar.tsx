@@ -1,104 +1,131 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
-import { Menu, X, Sparkles, Compass, Calendar, BookOpen, MapPin, Info, Layers } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Menu, X, Sparkles, Compass, Calendar, BookOpen, MapPin, Info, Layers, ChevronDown } from "lucide-react";
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const [isMuseumMenuOpen, setIsMuseumMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
 
-  const navLinks = [
-    { label: "Início", href: "/", icon: Compass },
-    { label: "O Museu", href: "/sobre", icon: Info },
-    { label: "4 Áreas", href: "/areas", icon: Layers },
-    { label: "Consultas & Búzios", href: "/consultas", icon: Sparkles, highlight: true },
-    { label: "Acervo", href: "/acervo", icon: BookOpen },
+  useEffect(() => {
+    const handleScroll = () => setIsScrolled(window.scrollY > 48);
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const museumLinks = [
+    { label: "Barracões", href: "/areas", icon: Layers },
     { label: "Programação", href: "/programacao", icon: Calendar },
     { label: "Educação", href: "/educacao", icon: BookOpen },
+  ];
+
+  const primaryLinks = [
+    { label: "Início", href: "/", icon: Compass },
+    { label: "O Museu", href: "/sobre", icon: Info },
+    { label: "Acervo", href: "/acervo", icon: BookOpen },
     { label: "Visite", href: "/visite", icon: MapPin },
   ];
 
   return (
-    <header className="sticky top-0 z-50 bg-neutral-900/95 text-white backdrop-blur-md border-b border-neutral-800 shadow-xl">
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3.5 sm:px-6 lg:px-8">
-        {/* Logo */}
-        <Link href="/" className="flex items-center gap-3 group">
-          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-amber-700 font-serif font-bold text-lg text-amber-100 shadow-md group-hover:bg-amber-600 transition-colors">
-            IA
+    <header className={`museum-navbar sticky top-0 z-50 border-b border-white/10 bg-foreground/95 text-white shadow-lg backdrop-blur-md ${isScrolled ? "is-scrolled" : ""}`}>
+      <div className="museum-navbar-inner mx-auto flex max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+        <Link href="/" className="museum-logo group" aria-label="Ilè Asè Alaketù Oyá Igbalè, início">
+          <div className="museum-logo-mark flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary font-serif font-bold text-lg text-white shadow-md transition-colors group-hover:bg-primary-dark">
+            
           </div>
-          <div className="flex flex-col">
-            <span className="font-serif text-sm font-bold tracking-wider text-amber-100 uppercase group-hover:text-amber-300 transition-colors">
+          <div className="museum-logo-copy flex flex-col">
+            <span className="font-serif text-sm font-bold uppercase tracking-wider text-white transition-colors group-hover:text-gold">
               Ilè Asè Alaketù
             </span>
-            <span className="text-[10px] tracking-widest text-neutral-400 uppercase font-medium">
-              Oyá Igbalè • Museu Vivo
+            <span className="text-[10px] font-medium uppercase tracking-widest text-white/55">
+              Oya Igbale / Museu Vivo
             </span>
           </div>
         </Link>
 
-        {/* Desktop Navigation */}
-        <nav className="hidden lg:flex items-center gap-1 xl:gap-2">
-          {navLinks.map((item) => {
+        <nav className="hidden items-center gap-1 lg:flex" aria-label="Navegação principal">
+          {primaryLinks.map((item) => {
             const Icon = item.icon;
-            if (item.highlight) {
+            if (item.label === "O Museu") {
               return (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className="flex items-center gap-1.5 rounded-full bg-gradient-to-r from-amber-600 to-amber-700 px-3.5 py-1.5 text-xs font-bold uppercase tracking-wider text-white shadow-lg hover:from-amber-500 hover:to-amber-600 transition-all transform hover:-translate-y-0.5 border border-amber-400/30"
-                >
-                  <Icon size={14} className="animate-pulse" />
-                  {item.label}
-                </Link>
+                <div key={item.href} className="museum-dropdown relative">
+                  <button type="button" onClick={() => setIsMuseumMenuOpen(!isMuseumMenuOpen)} aria-expanded={isMuseumMenuOpen} className="museum-nav-link flex items-center gap-1.5 rounded-md px-3 py-2 text-xs font-semibold uppercase tracking-wider text-white/80 transition-all hover:bg-white/10 hover:text-white">
+                    <Icon size={15} aria-hidden="true" />
+                    {item.label}
+                    <ChevronDown size={14} className={`transition-transform ${isMuseumMenuOpen ? "rotate-180" : ""}`} aria-hidden="true" />
+                  </button>
+                  {isMuseumMenuOpen && (
+                    <div className="museum-dropdown-panel absolute left-0 top-full mt-3 w-56 rounded-lg border border-white/10 bg-foreground p-2 shadow-2xl">
+                      <Link href={item.href} onClick={() => setIsMuseumMenuOpen(false)} className="museum-dropdown-link flex items-center gap-3 rounded-md px-3 py-2.5 text-sm text-white/85 hover:bg-white/10 hover:text-white">Sobre o Museu</Link>
+                      {museumLinks.map((museumItem) => {
+                        const MuseumIcon = museumItem.icon;
+                        return <Link key={museumItem.href} href={museumItem.href} onClick={() => setIsMuseumMenuOpen(false)} className="museum-dropdown-link flex items-center gap-3 rounded-md px-3 py-2.5 text-sm text-white/85 hover:bg-white/10 hover:text-white"><MuseumIcon size={16} className="text-gold" aria-hidden="true" />{museumItem.label}</Link>;
+                      })}
+                    </div>
+                  )}
+                </div>
               );
             }
             return (
               <Link
                 key={item.href}
                 href={item.href}
-                className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-neutral-300 hover:text-amber-200 hover:bg-neutral-800/60 rounded-md transition-all"
+                className="museum-nav-link flex items-center gap-1.5 rounded-md px-3 py-2 text-xs font-semibold uppercase tracking-wider text-white/80 transition-all hover:bg-white/10 hover:text-white"
               >
                 {item.label}
               </Link>
             );
           })}
+          <Link href="/consultas" className="museum-cta ml-5 flex items-center gap-2 rounded-full border border-gold/70 bg-gold px-4 py-2 text-xs font-bold uppercase tracking-wider text-foreground shadow-lg transition-all hover:-translate-y-0.5 hover:bg-yellow-300">
+            <Sparkles size={14} aria-hidden="true" />
+            Consultas &amp; Búzios
+          </Link>
         </nav>
 
-        {/* Mobile menu button */}
         <button
           type="button"
           onClick={() => setIsOpen(!isOpen)}
           aria-expanded={isOpen}
           aria-controls="mobile-navigation"
           aria-label={isOpen ? "Fechar menu de navegação" : "Abrir menu de navegação"}
-          className="rounded-lg p-2 text-neutral-300 hover:bg-neutral-800 hover:text-white lg:hidden"
+          className="rounded-lg p-2 text-white/75 hover:bg-white/10 hover:text-white lg:hidden"
         >
           {isOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
       </div>
 
-      {/* Mobile Navigation Drawer */}
       {isOpen && (
-        <div id="mobile-navigation" className="lg:hidden border-t border-neutral-800 bg-neutral-900/98 px-4 pb-6 pt-3 shadow-2xl animate-in slide-in-from-top duration-200">
+        <div id="mobile-navigation" className="border-t border-white/10 bg-foreground/98 px-4 pb-6 pt-3 shadow-2xl lg:hidden">
           <nav className="flex flex-col gap-1.5">
-            {navLinks.map((item) => {
+            {primaryLinks.map((item) => {
               const Icon = item.icon;
+              if (item.label === "O Museu") {
+                return (
+                  <div key={item.href}>
+                    <button type="button" onClick={() => setIsMuseumMenuOpen(!isMuseumMenuOpen)} aria-expanded={isMuseumMenuOpen} className="flex w-full items-center justify-between rounded-lg px-4 py-3 text-sm font-semibold text-white/85 hover:bg-white/10 hover:text-white">
+                      <span className="flex items-center gap-3"><Icon size={18} className="text-primary" aria-hidden="true" />{item.label}</span>
+                      <ChevronDown size={17} className={`transition-transform ${isMuseumMenuOpen ? "rotate-180" : ""}`} aria-hidden="true" />
+                    </button>
+                    {isMuseumMenuOpen && <div className="ml-5 border-l border-white/15 pl-3">{[...museumLinks, { label: "Sobre o Museu", href: item.href, icon: Info }].map((museumItem) => { const MuseumIcon = museumItem.icon; return <Link key={museumItem.href} href={museumItem.href} onClick={() => setIsOpen(false)} className="flex items-center gap-3 rounded-md px-3 py-2.5 text-sm text-white/70 hover:bg-white/10 hover:text-white"><MuseumIcon size={16} className="text-gold" aria-hidden="true" />{museumItem.label}</Link>; })}</div>}
+                  </div>
+                );
+              }
               return (
                 <Link
                   key={item.href}
                   href={item.href}
                   onClick={() => setIsOpen(false)}
-                  className={`flex items-center gap-3 rounded-lg px-4 py-2.5 text-sm font-semibold transition-all ${
-                    item.highlight
-                      ? "bg-amber-700/90 text-amber-100 border border-amber-500/40 font-bold"
-                      : "text-neutral-200 hover:bg-neutral-800 hover:text-amber-200"
-                  }`}
+                  className="flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-semibold text-white/80 hover:bg-white/10 hover:text-white"
                 >
-                  <Icon size={18} className={item.highlight ? "text-amber-200" : "text-amber-600"} />
+                  <Icon size={18} className="text-primary" aria-hidden="true" />
                   {item.label}
                 </Link>
               );
             })}
+            <Link href="/consultas" onClick={() => setIsOpen(false)} className="mt-3 flex items-center justify-center gap-2 rounded-full border border-gold/70 bg-gold px-4 py-3 text-sm font-bold text-foreground"><Sparkles size={17} aria-hidden="true" />Consultas &amp; Búzios</Link>
           </nav>
         </div>
       )}

@@ -54,11 +54,10 @@ export function Gallery() {
       <div
         className="absolute inset-0 bg-cover bg-center"
         style={{
-          backgroundImage:
-            "url('https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=1920&q=80')",
+          backgroundImage: `url('${image5.src.src}')`,
         }}
       />
-      <div className="absolute inset-0 bg-black/70" />
+      <div className="absolute inset-0 bg-foreground/80" />
 
       <div className="absolute -top-px left-0 right-0">
         <svg
@@ -97,9 +96,9 @@ export function Gallery() {
             {galleryImages.map((img) => (
               <div
                 key={img.alt}
-                className={`relative overflow-hidden rounded-xl ${img.className} ${img.height}`}
+                className={`relative overflow-hidden border border-white/15 ${img.className} ${img.height}`}
               >
-                <Image src={img.src} alt={img.alt} fill className="object-cover" />
+                <Image src={img.src} alt={img.alt} fill sizes="(max-width: 768px) 50vw, 25vw" className="object-cover" />
               </div>
             ))}
           </div>
