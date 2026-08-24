@@ -106,7 +106,7 @@ export function Gallery() {
         </div>
 
         <div className="mt-10 flex justify-center">
-          <PillButton href="#" variant="primary">
+          <PillButton href="/acervo" variant="primary">
             Ver Acervo Completo
             <ArrowRight size={14} />
           </PillButton>

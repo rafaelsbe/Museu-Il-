@@ -21,7 +21,7 @@ export function Featured() {
             Aqui você encontra exposições, relatos orais e atividades que conectam
             gerações, transformando cada visita em uma experiência de descoberta e reverência.
           </p>
-          <PillButton href="#" variant="ghost" className="w-fit">
+          <PillButton href="/sobre" variant="ghost" className="w-fit">
             Saiba Mais
             <ArrowRight size={14} />
           </PillButton>

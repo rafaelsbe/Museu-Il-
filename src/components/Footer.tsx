@@ -34,7 +34,7 @@ export function Footer() {
           </div>
 
           <div className="flex flex-col gap-3">
-            <PillButton href="#" variant="black" className="w-full md:w-auto">
+            <PillButton href="/visite#contato" variant="black" className="w-full md:w-auto">
               Entre em Contato
             </PillButton>
             <PillButton href="tel:+557132221234" className="w-full md:w-auto">
@@ -47,17 +47,11 @@ export function Footer() {
 
       <div className="border-t border-gray-border bg-white px-6 py-4 md:px-12">
         <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-center gap-x-4 gap-y-2 text-xs text-gray-text">
-          <a href="#" className="hover:text-foreground">
-            Política de Privacidade
-          </a>
+          <a href="/visite#privacidade" className="hover:text-foreground">Política de Privacidade</a>
           <span className="hidden text-gray-border md:inline">|</span>
-          <a href="#" className="hover:text-foreground">
-            Mapa do Site
-          </a>
+          <a href="/visite#mapa-do-site" className="hover:text-foreground">Mapa do Site</a>
           <span className="hidden text-gray-border md:inline">|</span>
-          <a href="#" className="hover:text-foreground">
-            Acessibilidade
-          </a>
+          <a href="/visite#acessibilidade" className="hover:text-foreground">Acessibilidade</a>
           <span className="hidden text-gray-border md:inline">|</span>
           <span>© 2026 Museu de Candomblé</span>
         </div>

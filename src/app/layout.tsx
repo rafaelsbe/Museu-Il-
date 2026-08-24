@@ -23,9 +23,12 @@ const dancing = Dancing_Script({
 });
 
 export const metadata: Metadata = {
-  title: "Museu",
+  title: {
+    default: "Ilè Asè Alaketù Oyá Igbalè | Museu Vivo",
+    template: "%s | Ilè Asè Alaketù Oyá Igbalè",
+  },
   description:
-    ".",
+    "Museu vivo de memória, acolhimento e educação sobre a cultura afro-brasileira em Aracaju.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

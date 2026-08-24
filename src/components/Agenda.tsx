@@ -43,7 +43,7 @@ export function Agenda() {
               visitantes de todas as idades.
             </p>
           </div>
-          <PillButton href="#">
+          <PillButton href="/programacao">
             Todos os Eventos
             <ArrowRight size={14} />
           </PillButton>

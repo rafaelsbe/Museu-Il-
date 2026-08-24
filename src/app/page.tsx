@@ -8,7 +8,7 @@ import { Featured } from "@/components/Featured";
 
 export default function Home() {
   return (
-    <main role="main" tabIndex={-1}>
+    <div tabIndex={-1}>
       <Header />
       <QuickLinks />
       <Agenda />
@@ -16,6 +16,6 @@ export default function Home() {
       <Testimonials />
       <KioskSocial />
       <Featured />
-    </main>
+    </div>
   );
 }
