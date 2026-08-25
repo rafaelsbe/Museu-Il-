@@ -1,63 +1,142 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Museu Vivo — Ilè Asè Alaketù Oyá Igbalè
 
-## Getting Started
+Site institucional do **Ilè Asè Alaketù Oyá Igbalè**, um museu vivo de memória, acolhimento e educação sobre a cultura afro-brasileira, localizado em Aracaju (SE). O projeto foi construído com Next.js (App Router) e usa Supabase como backend para conteúdo dinâmico (áreas do acervo, mídia) e para o agendamento de consultas.
 
-First, run the development server:
+🔗 Deploy: [museu-ile.vercel.app](https://museu-ile.vercel.app)
+
+## Sobre o projeto
+
+O site apresenta a instituição ao público e oferece:
+
+- **Página inicial** com destaques, agenda, galeria, depoimentos e redes sociais (`Header`, `QuickLinks`, `Agenda`, `Gallery`, `Testimonials`, `KioskSocial`, `Featured`).
+- **Sobre** — história e propósito do museu.
+- **Visite** — horários, endereço e informações de acessibilidade.
+- **Programação** — eventos e encontros (rodas de conversa, visitas mediadas, oficinas).
+- **Acervo** — coleções do museu (objetos de axé, vestuário, arquivo oral).
+- **Áreas** (`/areas` e `/areas/[area]`) — seções do acervo carregadas dinamicamente do Supabase.
+- **Educação** — programas para escolas e educadores.
+- **Consultas** (`/consultas`) — formulário público para agendamento de consultas, com valor fixo (R$ 200) e integração com o backend.
+
+## Stack técnica
+
+| Camada | Tecnologia |
+|---|---|
+| Framework | [Next.js 16](https://nextjs.org) (App Router) |
+| UI | React 19 + Tailwind CSS 4 |
+| Ícones | lucide-react |
+| Fontes | Playfair Display, Montserrat e Dancing Script (via `next/font/google`) |
+| Backend/Dados | [Supabase](https://supabase.com) (Postgres + Auth + Storage) via `@supabase/ssr` e `@supabase/supabase-js` |
+| Linguagem | TypeScript |
+| Lint | ESLint 9 (`eslint-config-next`) |
+
+## Estrutura do projeto
+
+```
+src/
+├── app/
+│   ├── page.tsx                # Home
+│   ├── layout.tsx              # Layout raiz (fontes, Navbar, Footer, metadata)
+│   ├── sobre/page.tsx
+│   ├── visite/page.tsx
+│   ├── programacao/page.tsx
+│   ├── educacao/page.tsx
+│   ├── acervo/page.tsx
+│   ├── consultas/page.tsx      # Formulário de agendamento (client component)
+│   ├── areas/
+│   │   ├── page.tsx            # Lista de áreas
+│   │   └── [area]/page.tsx     # Detalhe de uma área
+│   └── api/
+│       ├── areas/route.ts          # GET: lista áreas publicadas
+│       ├── areas/[area]/route.ts   # GET: detalhe de uma área + mídia
+│       └── consultas/route.ts      # GET: preço da consulta / POST: cria solicitação
+├── components/                 # Header, Navbar, Footer, Agenda, Gallery, Testimonials, etc.
+│   └── ui/                     # DottedPattern, PillButton, SectionHeading
+├── lib/utils.ts
+├── utils/supabase/
+│   ├── client.ts                # Cliente Supabase (browser)
+│   ├── server.ts                # Cliente Supabase (server, com cookies)
+│   └── middleware.ts            # Atualização de sessão
+├── proxy.ts                     # Middleware do Next.js que chama updateSession
+└── assets/                      # Imagens e mídia estática
+
+supabase/
+└── schema.sql                   # Schema do banco (areas, collections, items, events, media, consultation_requests)
+```
+
+## Modelo de dados (Supabase)
+
+O arquivo `supabase/schema.sql` define as tabelas principais:
+
+- **`areas`** — seções do acervo (slug, título, descrição, cor, ordem, publicação).
+- **`collections`** — coleções vinculadas a uma área.
+- **`items`** — peças/itens de uma coleção.
+- **`events`** — eventos da programação (data, local, capacidade, status).
+- **`media`** — imagens vinculadas a um item, área ou evento (com legenda e créditos).
+- **`consultation_requests`** — pedidos de consulta enviados pelo formulário público.
+
+O schema inclui:
+- `updated_at` automático via trigger (`set_updated_at`).
+- Normalização e validação do formulário de consultas via trigger (`normalize_consultation_request`), que sempre força `price_cents = 20000`, `status = 'pending'` e impede datas retroativas — o preço e o status **nunca** podem ser definidos pelo cliente.
+- **Row Level Security (RLS)** habilitada em todas as tabelas, com políticas de leitura pública apenas para conteúdo `is_published = true`.
+
+## Como rodar localmente
+
+### Pré-requisitos
+- Node.js
+- Um projeto Supabase (para as funcionalidades dinâmicas de áreas e consultas)
+
+### 1. Instalar dependências
+
+```bash
+npm install
+```
+
+### 2. Configurar variáveis de ambiente
+
+Crie um arquivo `.env.local` na raiz do projeto:
+
+```env
+NEXT_PUBLIC_SUPABASE_URL=sua-url-do-projeto-supabase
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=sua-chave-publica-supabase
+```
+
+### 3. Aplicar o schema no Supabase
+
+Rode o conteúdo de `supabase/schema.sql` no SQL Editor do seu projeto Supabase para criar as tabelas, triggers e políticas de RLS.
+
+### 4. Rodar o servidor de desenvolvimento
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Acesse [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Outros scripts
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run build   # build de produção
+npm run start   # inicia o servidor de produção
+npm run lint    # executa o ESLint
+```
 
-## Learn More
+## API interna
 
-To learn more about Next.js, take a look at the following resources:
+| Rota | Método | Descrição |
+|---|---|---|
+| `/api/areas` | `GET` | Lista as áreas publicadas (slug, título, descrição, cor) |
+| `/api/areas/[area]` | `GET` | Detalhe de uma área publicada, incluindo mídia associada |
+| `/api/consultas` | `GET` | Retorna o valor atual da consulta |
+| `/api/consultas` | `POST` | Cria uma solicitação de consulta (nome, e-mail, data futura, observações) |
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Deploy
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+O projeto está preparado para deploy na [Vercel](https://vercel.com), com as variáveis de ambiente do Supabase configuradas no painel do projeto. Lembre-se de:
 
-## Deploy on Vercel
+- Usar HTTPS em produção.
+- Proteger rotas administrativas (ainda não implementadas neste repositório) com autenticação, caso sejam adicionadas.
+- Manter as chaves do Supabase como variáveis de ambiente, nunca versionadas.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Status
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
-
-## Infra & Banco de Dados (recomendações)
-
-Este projeto foi preparado com rotas e APIs placeholder para facilitar a integração com um banco real.
-
-- Sugestões de bancos gerenciados:
-	- **Supabase / PostgreSQL** — fácil de usar, ótimo para aplicações relacionais.
-	- **Neon (Postgres)** — serverless Postgres com boa escalabilidade.
-	- **PlanetScale (MySQL)** — bom para escalabilidade horizontal e deploys contínuos.
-	- **MongoDB Atlas** — se preferir um modelo de documento.
-	- **Firebase Firestore** — simples para protótipos e integrações com mobile.
-
-- Recomendação inicial: Supabase (Postgres) para agendamento e conteúdo dinâmico; armazene imagens no próprio bucket do Supabase ou em S3/Cloud Storage.
-
-### Variáveis de ambiente sugeridas
-
-- `DATABASE_URL` — string de conexão para o seu Postgres/MySQL.
-- `SUPABASE_URL` e `SUPABASE_KEY` — se optar por Supabase.
-- `NEXT_PUBLIC_BASE_URL` — URL pública da aplicação (útil para chamadas server -> client em ambientes sem suporte a fetch interno).
-
-### Segurança e deploy
-
-- Use HTTPS em produção e configure `Strict-Transport-Security` no servidor/proxy.
-- Proteja rotas administrativas com autenticação (Supabase Auth, Auth0, NextAuth).
-- Para pagamentos (se necessário), integre Stripe ou PagSeguro e não envie dados sensíveis pelo cliente diretamente sem TLS.
-
-Se quiser, eu gero um `README_INFRA.md` separado com passos de provisionamento (Supabase + deploy no Vercel) e exemplos de migrations/queries. Quer que eu gere isso agora?
+Projeto em desenvolvimento inicial: as páginas de conteúdo institucional (Sobre, Educação, Acervo, Programação) ainda contêm textos de exemplo/placeholder a serem substituídos pelo conteúdo real do museu.
