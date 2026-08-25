@@ -6,7 +6,7 @@ export async function GET(_request: Request, { params }: { params: Promise<{ are
   const supabase = await createClient();
   const { data, error } = await supabase
     .from("areas")
-    .select("slug, title, description, color_token, media(src:storage_path, alt_text)")
+    .select("slug, title, description, color_token, media(storage_path, alt_text)")
     .eq("slug", area)
     .eq("is_published", true)
     .single();
@@ -24,6 +24,9 @@ export async function GET(_request: Request, { params }: { params: Promise<{ are
     title: data.title,
     description: data.description,
     colorToken: data.color_token,
-    images: (data.media || []).map((image) => ({ src: image.src, alt: image.alt_text })),
+    images: (data.media || []).map((image) => ({
+      src: supabase.storage.from("Images-museu").getPublicUrl(image.storage_path).data.publicUrl,
+      alt: image.alt_text,
+    })),
   });
 }
