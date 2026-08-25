@@ -52,12 +52,13 @@ export function Gallery() {
   return (
     <section className="relative overflow-hidden px-6 py-16 md:px-12 lg:px-16 lg:py-24">
       <div
-        className="absolute inset-0 bg-cover bg-center"
-        style={{
-          backgroundImage: `url('${image5.src.src}')`,
-        }}
-      />
-      <div className="absolute inset-0 bg-foreground/80" />
+  className="absolute inset-0 bg-cover bg-center"
+  style={{
+    backgroundImage: `url('${image5.src}')`, 
+  }}
+/>
+<div className="absolute inset-0 bg-foreground/80" />
+
 
       <div className="absolute -top-px left-0 right-0">
         <svg
