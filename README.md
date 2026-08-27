@@ -98,7 +98,11 @@ Crie um arquivo `.env.local` na raiz do projeto:
 ```env
 NEXT_PUBLIC_SUPABASE_URL=sua-url-do-projeto-supabase
 NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=sua-chave-publica-supabase
+RESEND_API_KEY=sua-chave-da-api-do-resend
+RESEND_FROM_EMAIL=notificacoes@seu-dominio-verificado.com
 ```
+
+As novas solicitações de consulta são enviadas para `rafelbezerrahdev@gmail.com` por meio do Resend. O endereço usado em `RESEND_FROM_EMAIL` precisa estar verificado no Resend; em desenvolvimento, o remetente de teste `onboarding@resend.dev` pode ser usado conforme as limitações da conta.
 
 ### 3. Aplicar o schema no Supabase
 
