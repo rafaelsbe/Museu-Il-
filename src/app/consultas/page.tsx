@@ -7,6 +7,7 @@ const CONSULTA_PRICE = 200; // R$ 200
 export default function ConsultasPage() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
   const [date, setDate] = useState("");
   const [notes, setNotes] = useState("");
   const [submitting, setSubmitting] = useState(false);
@@ -23,13 +24,14 @@ export default function ConsultasPage() {
       const res = await fetch("/api/consultas", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, date, notes, price: CONSULTA_PRICE }),
+        body: JSON.stringify({ name, email, phone, date, notes, price: CONSULTA_PRICE }),
       });
       const json = await res.json();
       if (!res.ok) throw new Error(json.error || "Falha ao agendar consulta");
       setSuccess(json.message || "Agendamento realizado com sucesso.");
       setName("");
       setEmail("");
+      setPhone("");
       setDate("");
       setNotes("");
     } catch {
@@ -56,6 +58,21 @@ export default function ConsultasPage() {
           <div>
             <label className="block text-sm font-semibold" htmlFor="email">E-mail</label>
             <input id="email" name="email" type="email" autoComplete="email" value={email} onChange={(e) => setEmail(e.target.value)} required className="mt-1 w-full rounded-md border px-3 py-2" />
+          </div>
+
+          <div>
+            <label className="block text-sm font-semibold" htmlFor="phone">Telefone</label>
+            <input 
+              id="phone" 
+              name="phone" 
+              type="tel" 
+              autoComplete="tel" 
+              value={phone} 
+              onChange={(e) => setPhone(e.target.value)} 
+              required 
+              placeholder="(79) 99999-9999" 
+              className="mt-1 w-full rounded-md border px-3 py-2" 
+            />
           </div>
 
           <div>
