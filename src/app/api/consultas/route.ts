@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@/utils/supabase/server";
 import { isValidBrazilianPhone, cleanPhone } from "@/lib/phoneValidator";
-import nodemailer from "nodemailer";
+import { createMailTransporter, escapeHtml } from "@/lib/mailer";
 
 type Consulta = {
   id: string;
@@ -62,16 +62,6 @@ function isFutureOrToday(value: string) {
   );
 }
 
-function escapeHtml(value: string) {
-  return value.replace(/[&<>'"]/g, (character) => ({
-    "&": "&amp;",
-    "<": "&lt;",
-    ">": "&gt;",
-    "'": "&#39;",
-    '"': "&quot;",
-  })[character] ?? character);
-}
-
 async function sendConsultaNotification(consulta: {
   id: string;
   name: string;
@@ -79,20 +69,7 @@ async function sendConsultaNotification(consulta: {
   date: string;
   notes?: string;
 }) {
-  const gmailUser = process.env.GMAIL_USER;
-  const gmailPass = process.env.GMAIL_PASS;
-
-  if (!gmailUser || !gmailPass) {
-    throw new Error("Configurações de e-mail (GMAIL_USER ou GMAIL_PASS) ausentes no arquivo .env");
-  }
-
-  const transporter = nodemailer.createTransport({
-    service: "gmail",
-    auth: {
-      user: gmailUser,
-      pass: gmailPass, 
-    },
-  });
+  const { gmailUser, transporter } = createMailTransporter();
 
   const safeName = escapeHtml(consulta.name);
   const safeEmail = escapeHtml(consulta.email);

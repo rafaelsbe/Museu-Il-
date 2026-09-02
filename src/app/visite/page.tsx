@@ -23,7 +23,7 @@ export default function Visite() {
           </div>
         </div>
 
-        <a className="route-link" href="/consultas">Agendar uma consulta</a>
+        <a className="route-link" href="/visitas/agendar">Agendar visita</a>
 
         {/* ── Mapa interativo ── */}
         <div style={{ marginTop: '3.5rem' }}>

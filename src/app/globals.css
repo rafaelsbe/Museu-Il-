@@ -212,8 +212,60 @@ html {
 .consultation-card { max-width: 42rem; padding: clamp(1.25rem, 4vw, 2.5rem); background: #fffaf5; border: 1px solid #e6d9cc; box-shadow: 0 18px 40px rgba(72, 45, 28, .1); }
 .price-tag { margin-bottom: 1.75rem; color: var(--primary); font-family: var(--font-playfair), Georgia, serif; font-size: 2.4rem; font-weight: 700; }
 .price-tag span { color: var(--gray-text); font-family: var(--font-montserrat), system-ui, sans-serif; font-size: .8rem; font-weight: 500; }
-.consultation-card input, .consultation-card textarea { border: 1px solid #d8c8ba; background: white; color: #241710; border-radius: 5px; }
-.consultation-card input:focus, .consultation-card textarea:focus { border-color: var(--secondary); box-shadow: 0 0 0 3px rgba(23, 107, 104, .15); outline: none; }
+.consultation-card input, .consultation-card textarea, .consultation-card select { border: 1px solid #d8c8ba; background: white; color: #241710; border-radius: 5px; }
+.consultation-card input:focus, .consultation-card textarea:focus, .consultation-card select:focus { border-color: var(--secondary); box-shadow: 0 0 0 3px rgba(23, 107, 104, .15); outline: none; }
+.consultation-modern-card { max-width: 48rem; }
+.consultation-modern-card form { display: grid; gap: 1.25rem; }
+.consultation-modern-card form > div { display: flex; flex-direction: column; gap: .45rem; }
+.consultation-modern-card label { color: var(--foreground); font-size: .78rem; font-weight: 700; }
+.consultation-modern-card input, .consultation-modern-card textarea { width: 100%; box-sizing: border-box; padding: .8rem .9rem; font: inherit; }
+.consultation-date-field { align-items: flex-start; }
+.consultation-calendar { margin-top: .15rem; }
+.visit-booking-layout { max-width: 70rem; }
+.visit-booking-card { max-width: 58rem; background: #fffaf5; border: 1px solid #e6d9cc; box-shadow: 0 18px 40px rgba(72, 45, 28, .1); }
+.visit-form { padding: clamp(1.25rem, 4vw, 3rem); }
+.visit-form-section { padding: 0 0 2.5rem; margin-bottom: 2.5rem; border-bottom: 1px solid #e6d9cc; }
+.visit-form-section:last-of-type { margin-bottom: 1.5rem; }
+.visit-form-heading { display: flex; gap: 1rem; align-items: flex-start; margin-bottom: 1.5rem; }
+.visit-form-heading > span { color: var(--primary); font-size: .72rem; font-weight: 700; letter-spacing: .12em; padding-top: .25rem; }
+.visit-form-heading h2 { margin: 0 0 .25rem; font-family: var(--font-playfair), Georgia, serif; font-size: 1.6rem; }
+.visit-form-heading p { margin: 0; color: var(--gray-text); font-size: .85rem; }
+.visit-form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.25rem; }
+.visit-field { display: flex; flex-direction: column; gap: .45rem; }
+.visit-field-wide { grid-column: 1 / -1; }
+.visit-field label, .visit-calendar-wrap > label { color: var(--foreground); font-size: .78rem; font-weight: 700; }
+.visit-field label span, .visit-time-field label span { color: var(--gray-text); font-weight: 400; }
+.visit-field input, .visit-field textarea, .visit-field select { width: 100%; box-sizing: border-box; border: 1px solid #d8c8ba; border-radius: 6px; background: #fff; color: #241710; padding: .8rem .9rem; font: inherit; transition: border-color .2s ease, box-shadow .2s ease; }
+.visit-field textarea { resize: vertical; min-height: 7rem; }
+.visit-field input:focus, .visit-field textarea:focus, .visit-field select:focus { border-color: var(--secondary); box-shadow: 0 0 0 3px rgba(23, 107, 104, .15); outline: none; }
+.visit-menu { position: relative; }
+.visit-menu-trigger { display: flex; align-items: center; justify-content: space-between; width: 100%; min-height: 3rem; border: 1px solid #d8c8ba; border-radius: 6px; background: #fff; color: #241710; padding: .8rem .9rem; font: inherit; text-align: left; cursor: pointer; transition: border-color .2s ease, box-shadow .2s ease; }
+.visit-menu-trigger:hover, .visit-menu-trigger[aria-expanded="true"] { border-color: var(--secondary); box-shadow: 0 0 0 3px rgba(23, 107, 104, .15); }
+.visit-menu-trigger > span { color: var(--primary); font-size: 1.25rem; line-height: .7; }
+.visit-menu-list { position: absolute; z-index: 20; top: calc(100% + .4rem); left: 0; width: 100%; max-height: 16rem; overflow-y: auto; padding: .35rem; border: 1px solid #d8c8ba; border-radius: 8px; background: #fffaf5; box-shadow: 0 14px 30px rgba(72, 45, 28, .16); }
+.visit-time-list { max-height: 14rem; }
+.visit-menu-option { display: flex; align-items: center; justify-content: space-between; width: 100%; border: 0; border-radius: 5px; background: transparent; color: var(--foreground); padding: .7rem .75rem; font: inherit; text-align: left; cursor: pointer; }
+.visit-menu-option:hover, .visit-menu-option:focus-visible, .visit-menu-option.is-selected { background: #f5ddd5; color: var(--primary-dark); }
+.visit-menu-option > span { color: var(--primary); font-weight: 700; }
+.visit-date-grid { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(12rem, .75fr); gap: 2rem; align-items: start; }
+.visit-calendar-wrap { display: flex; flex-direction: column; gap: .65rem; }
+.visit-calendar { width: fit-content; max-width: 100%; padding: .7rem; border: 1px solid #e6d9cc; border-radius: 8px; background: #fff; }
+.visit-calendar .rdp { --rdp-accent-color: var(--primary); --rdp-accent-background-color: #f5ddd5; --rdp-today-color: var(--primary); --rdp-selected-border: 2px solid var(--primary); --rdp-day_button-border-radius: 5px; --rdp-day_button-height: 2.25rem; --rdp-day_button-width: 2.25rem; margin: 0; }
+.visit-calendar .rdp-month_caption { color: var(--foreground); font-family: var(--font-playfair), Georgia, serif; font-size: 1.05rem; }
+.visit-calendar .rdp-chevron { fill: var(--primary); }
+.visit-calendar .rdp-day_button:hover { background: #f5ddd5; }
+.visit-calendar .rdp-selected .rdp-day_button { border: 2px solid var(--primary) !important; background: #f5ddd5 !important; color: var(--primary-dark) !important; }
+.visit-calendar .rdp-today .rdp-day_button { color: var(--primary) !important; }
+.visit-calendar .rdp-day_button:focus-visible { outline: 3px solid var(--primary) !important; outline-offset: 2px; }
+.visit-selected-date { margin: 0; color: var(--gray-text); font-size: .82rem; }
+.visit-time-field { padding-top: 2rem; }
+.visit-submit { display: inline-flex; align-items: center; gap: 1rem; border: 0; border-radius: 999px; background: var(--primary); color: #fff; padding: .85rem 1.25rem; font: inherit; font-size: .82rem; font-weight: 700; cursor: pointer; transition: background .2s ease, transform .2s ease; }
+.visit-submit:hover { background: var(--primary-dark); transform: translateY(-1px); }
+.visit-submit:disabled { cursor: wait; opacity: .65; transform: none; }
+.Toastify__toast { border: 1px solid #e6d9cc; border-radius: 8px; font-family: var(--font-montserrat), system-ui, sans-serif; }
+.Toastify__toast--success { background: #f4fbf6; color: #1d5438; }
+.Toastify__toast--error { background: #fff7f5; color: #7b2d22; }
+@media (max-width: 700px) { .visit-form-grid, .visit-date-grid { grid-template-columns: 1fr; } .visit-time-field { padding-top: 0; } .visit-calendar { width: 100%; } .visit-calendar .rdp { width: 100%; } }
 .no-underline { text-decoration: none; }
 @media (max-width: 700px) { .content-grid, .feature-grid, .editorial-grid, .info-strip, .collection-detail { grid-template-columns: 1fr; } .page-hero-content { padding-top: 3.5rem; padding-bottom: 3.5rem; } .back-link { margin-bottom: 2rem; } .section-space, .page-section { padding-top: 3rem; padding-bottom: 3rem; } }
 
