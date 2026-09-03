@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { DayPicker } from "react-day-picker";
-import { toast } from "react-toastify";
+import { useToast } from "@/components/ToastProvider";
 import "react-day-picker/style.css";
 
 type VisitType = "school" | "other" | "personal_single" | "personal_group";
@@ -44,6 +44,7 @@ export default function AgendarVisitaPage() {
   const [submitting, setSubmitting] = useState(false);
   const [selectedDate, setSelectedDate] = useState<Date>();
   const [openMenu, setOpenMenu] = useState<"visit_type" | "requested_time" | null>(null);
+  const toast = useToast();
   const today = new Date();
 
   function updateField(field: keyof typeof form, value: string) {
@@ -76,12 +77,13 @@ export default function AgendarVisitaPage() {
       });
       const result = await response.json();
       if (!response.ok) throw new Error(result.error || "Falha ao enviar agendamento.");
-      toast.success("Visita agendada com sucesso!", { autoClose: 6500 });
+      toast.success(result.emailSent === false ? "Visita recebida com sucesso. O e-mail de confirmação não foi enviado." : (result.message || "Visita agendada com sucesso!"));
       setForm(initialForm);
       setSelectedDate(undefined);
       setOpenMenu(null);
     } catch (submitError) {
-      toast.error(submitError instanceof Error ? submitError.message : "Não foi possível enviar o agendamento.");
+      const message = submitError instanceof Error ? submitError.message : "Não foi possível enviar o agendamento.";
+      toast.error(message);
     } finally {
       setSubmitting(false);
     }

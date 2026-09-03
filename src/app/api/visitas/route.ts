@@ -143,10 +143,15 @@ export async function POST(request: Request) {
       });
     } catch (notificationError) {
       console.error("Visit notification error", notificationError);
-      return NextResponse.json({ error: "A visita foi registrada, mas não foi possível enviar a confirmação por e-mail." }, { status: 502 });
+      return NextResponse.json({
+        ok: true,
+        id: visitId,
+        emailSent: false,
+        message: "Visita registrada com sucesso, mas não foi possível enviar o e-mail de confirmação.",
+      }, { status: 201 });
     }
 
-    return NextResponse.json({ ok: true, id: visitId, message: "Solicitação de visita recebida." }, { status: 201 });
+    return NextResponse.json({ ok: true, id: visitId, emailSent: true, message: "Solicitação de visita recebida." }, { status: 201 });
   } catch (error) {
     console.error("VISIT API ERROR", error);
     return NextResponse.json({ error: "Dados inválidos." }, { status: 400 });

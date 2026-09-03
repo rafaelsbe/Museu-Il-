@@ -321,13 +321,19 @@ export async function POST(request: Request) {
       });
     } catch (notificationError) {
       console.error("Consultation notification error", notificationError);
-      return NextResponse.json({ error: "A solicitação foi registrada, mas não foi possível enviar a notificação por e-mail." }, { status: 502 });
+      return NextResponse.json({
+        ok: true,
+        id: data.id,
+        emailSent: false,
+        message: "Solicitação registrada com sucesso, mas não foi possível enviar o e-mail de confirmação.",
+      }, { status: 201 });
     }
 
     return NextResponse.json(
       {
         ok: true,
         id: data.id,
+        emailSent: true,
         message: "Agendamento recebido.",
       },
       { status: 201 }

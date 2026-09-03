@@ -98,11 +98,11 @@ Crie um arquivo `.env.local` na raiz do projeto:
 ```env
 NEXT_PUBLIC_SUPABASE_URL=sua-url-do-projeto-supabase
 NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=sua-chave-publica-supabase
-RESEND_API_KEY=sua-chave-da-api-do-resend
-RESEND_FROM_EMAIL=notificacoes@seu-dominio-verificado.com
+GMAIL_USER=seu-email@gmail.com
+GMAIL_PASS=sua-senha-de-app-do-gmail
 ```
 
-As novas solicitações de consulta são enviadas para `rafelbezerrahdev@gmail.com` por meio do Resend. O endereço usado em `RESEND_FROM_EMAIL` precisa estar verificado no Resend; em desenvolvimento, o remetente de teste `onboarding@resend.dev` pode ser usado conforme as limitações da conta.
+As notificações são enviadas pelo Nodemailer usando SMTP do Gmail para `museuilecontato@gmail.com` e para o e-mail informado pelo visitante. `GMAIL_PASS` deve ser uma senha de app do Gmail, não a senha normal da conta. Em produção, configure essas variáveis também no ambiente do deploy.
 
 ### 3. Aplicar o schema no Supabase
 

@@ -58,14 +58,35 @@ html {
   scroll-behavior: smooth;
 }
 
-/* Navbar — fixed height, no scroll transformation */
+/* Navbar */
 .museum-navbar-inner { min-height: 4.75rem !important; }
-.museum-logo { display: flex; align-items: center; gap: .75rem; min-width: 0; }
+.museum-logo { display: flex; align-items: center; gap: .75rem; min-width: 0; transition: transform .25s ease; }
+.museum-logo:hover { transform: translateY(-1px); }
+.museum-logo-mark { transition: transform .35s cubic-bezier(.2, .8, .2, 1), box-shadow .35s ease; }
+.museum-logo:hover .museum-logo-mark { transform: rotate(-8deg) scale(1.06); box-shadow: 0 8px 20px rgba(185, 88, 67, .35); }
 .museum-logo-copy { max-width: 15rem; overflow: hidden; white-space: nowrap; }
-.museum-dropdown-panel { animation: museum-menu-in .16s ease-out; }
-@keyframes museum-menu-in { from { opacity: 0; transform: translateY(-.35rem); } to { opacity: 1; transform: translateY(0); } }
+.museum-nav-link { position: relative; overflow: hidden; transition: background-color .25s ease, color .25s ease, transform .25s ease; }
+.museum-nav-link::after { position: absolute; right: .75rem; bottom: .25rem; left: .75rem; height: 2px; background: var(--color-gold); content: ""; transform: scaleX(0); transform-origin: center; transition: transform .25s ease; }
+.museum-nav-link:hover { transform: translateY(-1px); }
+.museum-nav-link:hover::after, .museum-nav-link:focus-visible::after { transform: scaleX(1); }
+.museum-dropdown-panel { transform-origin: top left; animation: museum-menu-in .22s cubic-bezier(.2, .8, .2, 1) both; }
+.museum-dropdown-link { transition: background-color .2s ease, color .2s ease, transform .2s ease; }
+.museum-dropdown-link:hover { transform: translateX(3px); }
+.museum-cta { transition: transform .25s ease, box-shadow .25s ease, background-color .25s ease; }
+.museum-cta:hover { box-shadow: 0 8px 18px rgba(231, 190, 86, .22); }
+.museum-menu-toggle { transition: transform .25s ease, background-color .25s ease, color .25s ease; }
+.museum-menu-toggle:active { transform: scale(.9); }
+.museum-mobile-panel { transform-origin: top; animation: museum-mobile-in .3s cubic-bezier(.2, .8, .2, 1) both; }
+.museum-mobile-item { animation: museum-mobile-item-in .35s ease-out both; }
+.museum-mobile-item, .museum-mobile-item * { transition: background-color .2s ease, color .2s ease, transform .2s ease; }
+.museum-mobile-item:hover svg { transform: translateX(2px); }
+.museum-mobile-cta { animation: museum-mobile-item-in .4s .18s ease-out both; transition: transform .25s ease, box-shadow .25s ease, background-color .25s ease; }
+.museum-mobile-cta:hover { transform: translateY(-2px); box-shadow: 0 8px 18px rgba(231, 190, 86, .22); }
+@keyframes museum-menu-in { from { opacity: 0; transform: translateY(-.35rem) scale(.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
+@keyframes museum-mobile-in { from { opacity: 0; transform: translateY(-.75rem); } to { opacity: 1; transform: translateY(0); } }
+@keyframes museum-mobile-item-in { from { opacity: 0; transform: translateX(-.75rem); } to { opacity: 1; transform: translateX(0); } }
 @media (max-width: 1023px) { .museum-navbar-inner { min-height: 4.25rem !important; } }
-@media (prefers-reduced-motion: reduce) { .museum-navbar-inner { transition: none; } }
+@media (prefers-reduced-motion: reduce) { .museum-navbar-inner, .museum-logo, .museum-logo-mark, .museum-nav-link, .museum-dropdown-link, .museum-cta, .museum-menu-toggle { transition: none; } .museum-dropdown-panel, .museum-mobile-panel, .museum-mobile-item, .museum-mobile-cta { animation: none; } }
 
 /* Accessibility utilities */
 .skip-link {
@@ -262,9 +283,13 @@ html {
 .visit-submit { display: inline-flex; align-items: center; gap: 1rem; border: 0; border-radius: 999px; background: var(--primary); color: #fff; padding: .85rem 1.25rem; font: inherit; font-size: .82rem; font-weight: 700; cursor: pointer; transition: background .2s ease, transform .2s ease; }
 .visit-submit:hover { background: var(--primary-dark); transform: translateY(-1px); }
 .visit-submit:disabled { cursor: wait; opacity: .65; transform: none; }
-.Toastify__toast { border: 1px solid #e6d9cc; border-radius: 8px; font-family: var(--font-montserrat), system-ui, sans-serif; }
-.Toastify__toast--success { background: #f4fbf6; color: #1d5438; }
-.Toastify__toast--error { background: #fff7f5; color: #7b2d22; }
+.floating-toast { position: fixed; z-index: 9999; top: 1.25rem; right: 1.25rem; display: flex; align-items: center; gap: .75rem; width: min(25rem, calc(100vw - 2.5rem)); border: 1px solid; border-radius: 12px; padding: 1rem 1rem 1rem .9rem; box-shadow: 0 16px 36px rgba(50, 35, 25, .2); font-family: var(--font-montserrat), system-ui, sans-serif; font-size: .84rem; line-height: 1.4; animation: floating-toast-in .35s cubic-bezier(.2, .8, .2, 1) both; }
+.floating-toast-success { border-color: #a8d5b8; background: #f4fbf6; color: #1d5438; }
+.floating-toast-error { border-color: #e3aaa0; background: #fff7f5; color: #7b2d22; }
+.floating-toast-icon { display: grid; flex: 0 0 1.65rem; place-items: center; width: 1.65rem; height: 1.65rem; border-radius: 50%; background: currentColor; color: #fff; font-size: 1rem; font-weight: 700; }
+.floating-toast-close { margin-left: auto; border: 0; background: transparent; color: currentColor; font-size: 1.3rem; line-height: 1; cursor: pointer; opacity: .65; }
+.floating-toast-close:hover { opacity: 1; }
+@keyframes floating-toast-in { from { opacity: 0; transform: translate3d(1.5rem, -1rem, 0) scale(.96); } to { opacity: 1; transform: translate3d(0, 0, 0) scale(1); } }
 @media (max-width: 700px) { .visit-form-grid, .visit-date-grid { grid-template-columns: 1fr; } .visit-time-field { padding-top: 0; } .visit-calendar { width: 100%; } .visit-calendar .rdp { width: 100%; } }
 .no-underline { text-decoration: none; }
 @media (max-width: 700px) { .content-grid, .feature-grid, .editorial-grid, .info-strip, .collection-detail { grid-template-columns: 1fr; } .page-hero-content { padding-top: 3.5rem; padding-bottom: 3.5rem; } .back-link { margin-bottom: 2rem; } .section-space, .page-section { padding-top: 3rem; padding-bottom: 3rem; } }

@@ -32,7 +32,7 @@ export function Navbar() {
   return (
     <header className={`museum-navbar sticky top-0 z-50 border-b border-white/10 bg-foreground/95 text-white shadow-lg backdrop-blur-md ${isScrolled ? "is-scrolled" : ""}`}>
       <div className="museum-navbar-inner mx-auto flex max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-        <Link href="/" className="museum-logo group" aria-label="Ilè Asè Alaketù Oyá Igbalè, início">
+          <Link href="/" className="museum-logo group" aria-label="Ilè Asè Alaketù Oyá Igbalè, início">
           <div className="museum-logo-mark flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary font-serif font-bold text-lg text-white shadow-md transition-colors group-hover:bg-primary-dark">
             
           </div>
@@ -91,20 +91,20 @@ export function Navbar() {
           aria-expanded={isOpen}
           aria-controls="mobile-navigation"
           aria-label={isOpen ? "Fechar menu de navegação" : "Abrir menu de navegação"}
-          className="rounded-lg p-2 text-white/75 hover:bg-white/10 hover:text-white lg:hidden"
+          className="museum-menu-toggle rounded-lg p-2 text-white/75 hover:bg-white/10 hover:text-white lg:hidden"
         >
           {isOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
       </div>
 
       {isOpen && (
-        <div id="mobile-navigation" className="border-t border-white/10 bg-foreground/98 px-4 pb-6 pt-3 shadow-2xl lg:hidden">
+        <div id="mobile-navigation" className="museum-mobile-panel border-t border-white/10 bg-foreground/98 px-4 pb-6 pt-3 shadow-2xl lg:hidden">
           <nav className="flex flex-col gap-1.5">
-            {primaryLinks.map((item) => {
+            {primaryLinks.map((item, index) => {
               const Icon = item.icon;
               if (item.label === "O Museu") {
                 return (
-                  <div key={item.href}>
+                  <div key={item.href} className="museum-mobile-item" style={{ animationDelay: `${index * 45}ms` }}>
                     <button type="button" onClick={() => setIsMuseumMenuOpen(!isMuseumMenuOpen)} aria-expanded={isMuseumMenuOpen} className="flex w-full items-center justify-between rounded-lg px-4 py-3 text-sm font-semibold text-white/85 hover:bg-white/10 hover:text-white">
                       <span className="flex items-center gap-3"><Icon size={18} className="text-primary" aria-hidden="true" />{item.label}</span>
                       <ChevronDown size={17} className={`transition-transform ${isMuseumMenuOpen ? "rotate-180" : ""}`} aria-hidden="true" />
@@ -118,14 +118,15 @@ export function Navbar() {
                   key={item.href}
                   href={item.href}
                   onClick={() => setIsOpen(false)}
-                  className="flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-semibold text-white/80 hover:bg-white/10 hover:text-white"
+                  className="museum-mobile-item flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-semibold text-white/80 hover:bg-white/10 hover:text-white"
+                  style={{ animationDelay: `${index * 45}ms` }}
                 >
                   <Icon size={18} className="text-primary" aria-hidden="true" />
                   {item.label}
                 </Link>
               );
             })}
-            <Link href="/consultas" onClick={() => setIsOpen(false)} className="mt-3 flex items-center justify-center gap-2 rounded-full border border-gold/70 bg-gold px-4 py-3 text-sm font-bold text-foreground"><Sparkles size={17} aria-hidden="true" />Consultas &amp; Búzios</Link>
+            <Link href="/consultas" onClick={() => setIsOpen(false)} className="museum-mobile-cta mt-3 flex items-center justify-center gap-2 rounded-full border border-gold/70 bg-gold px-4 py-3 text-sm font-bold text-foreground"><Sparkles size={17} aria-hidden="true" />Consultas &amp; Búzios</Link>
           </nav>
         </div>
       )}

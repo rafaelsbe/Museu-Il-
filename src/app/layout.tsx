@@ -42,10 +42,11 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <a href="#main-content" className="skip-link">
           Pular para o conteúdo
         </a>
-        <Navbar />
-        <div id="main-content" className="flex-1">{children}</div>
-        <Footer />
-        <ToastProvider />
+        <ToastProvider>
+          <Navbar />
+          <div id="main-content" className="flex-1">{children}</div>
+          <Footer />
+        </ToastProvider>
       </body>
     </html>
   );

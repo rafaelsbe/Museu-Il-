@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { DayPicker } from "react-day-picker";
-import { toast } from "react-toastify";
+import { useToast } from "@/components/ToastProvider";
 import "react-day-picker/style.css";
 
 const CONSULTA_PRICE = 200; // R$ 200
@@ -28,14 +28,11 @@ export default function ConsultasPage() {
   const [notes, setNotes] = useState("");
   const [selectedDate, setSelectedDate] = useState<Date>();
   const [submitting, setSubmitting] = useState(false);
-  const [success, setSuccess] = useState<string | null>(null);
-  const [error, setError] = useState<string | null>(null);
+  const toast = useToast();
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setSubmitting(true);
-    setError(null);
-    setSuccess(null);
 
     try {
       const res = await fetch("/api/consultas", {
@@ -45,17 +42,15 @@ export default function ConsultasPage() {
       });
       const json = await res.json();
       if (!res.ok) throw new Error(json.error || "Falha ao agendar consulta");
-      setSuccess(json.message || "Agendamento realizado com sucesso.");
       setName("");
       setEmail("");
       setPhone("");
       setDate("");
       setNotes("");
       setSelectedDate(undefined);
-      toast.success("Consulta agendada com sucesso!", { autoClose: 6500 });
+      toast.success(json.emailSent === false ? "Consulta recebida com sucesso. O e-mail de confirmação não foi enviado." : "Consulta agendada com sucesso!");
     } catch {
       const message = "Não foi possível enviar o agendamento. Tente novamente.";
-      setError(message);
       toast.error(message);
     } finally {
       setSubmitting(false);
@@ -114,8 +109,6 @@ export default function ConsultasPage() {
             </button>
           </div>
 
-          {success && <p role="status" className="sr-only">{success}</p>}
-          {error && <p role="alert" className="sr-only">{error.replace("Error: ", "")}</p>}
         </form>
         </div>
       </section>
